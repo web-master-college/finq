@@ -20,9 +20,22 @@ Fetched profiles and profiles loaded from the database live in one Pinia store. 
 
 Tradeoff: Pinia adds a dependency. Passing profiles through route state, or refetching them in every view, would duplicate the same data and make the detail actions harder to keep consistent.
 
+
+## 4. Stable Profile Identity and Persistence-Driven Actions
+
+I chose Random User's `login.uuid` as the stable profile identifier and SQLite primary key, allowing profiles fetched from the external API and profiles stored locally to share the same identity.
+
+The UI determines whether to offer Save or Delete based on the profile's persistence state rather than the screen from which it was opened. This keeps the behavior consistent across Fetch and History.
+
+**Tradeoff:** The client must handle cases where a profile already exists in SQLite but its local state is not yet synchronized. The API returns `409 Conflict`, and the client recovers by loading the existing profile instead of creating a duplicate.
+
+
 ## Search
 
 Fetch and History share one search box. The query is local component state, and the list filters on each keystroke with no debounce. Matching is case- and accent-insensitive against the title plus name, and against country.
+
+**Reasoning:** Filtering only 10 local profiles is inexpensive, so debouncing would introduce unnecessary input lag.
+**Tradeoff:** The search query is intentionally not persisted and resets when navigating away from the screen.
 
 ## RTL and LTR
 
