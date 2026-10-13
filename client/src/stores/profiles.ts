@@ -92,7 +92,12 @@ export const useProfilesStore = defineStore('profiles', () => {
     savedProfiles.value = next
   }
 
-  function replaceNames(profiles: Profile[], id: string, firstName: string, lastName: string): Profile[] {
+  function replaceNames(
+    profiles: Profile[],
+    id: string,
+    firstName: string,
+    lastName: string,
+  ): Profile[] {
     const index = profiles.findIndex((profile) => profile.id === id)
     if (index === -1) {
       return profiles
@@ -133,18 +138,18 @@ export const useProfilesStore = defineStore('profiles', () => {
         return profileById(id) ? 'ready' : 'missing'
       }
       if (!response.ok) {
-        return 'error'
+        return profileById(id) ? 'ready' : 'error'
       }
 
       const profile = parseProfile(await response.json())
       if (!profile || profile.id !== id) {
-        return 'error'
+        return profileById(id) ? 'ready' : 'error'
       }
 
       upsertSavedProfile(profile)
       return 'ready'
     } catch {
-      return 'error'
+      return profileById(id) ? 'ready' : 'error'
     }
   }
 
@@ -215,7 +220,12 @@ export const useProfilesStore = defineStore('profiles', () => {
     }
 
     upsertSavedProfile(updated)
-    fetchedProfiles.value = replaceNames(fetchedProfiles.value, id, updated.firstName, updated.lastName)
+    fetchedProfiles.value = replaceNames(
+      fetchedProfiles.value,
+      id,
+      updated.firstName,
+      updated.lastName,
+    )
   }
 
   async function deleteSavedProfile(id: string): Promise<void> {

@@ -24,14 +24,27 @@ The home page calls `/api/health` through the Vite dev proxy and shows whether t
 
 ## Scripts
 
-| Command                  | Purpose                                                                      |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| `npm install`            | Install workspace dependencies                                               |
-| `npm run dev`            | Start the client and server with hot reload                                  |
-| `npm run build`          | Build the client and server                                                  |
-| `npm run typecheck`      | Type-check both workspaces                                                   |
-| `npm run lint`           | Run ESLint                                                                   |
-| `npm run format`         | Format the repository with Prettier                                          |
+| Command             | Purpose                                     |
+| ------------------- | ------------------------------------------- |
+| `npm install`       | Install workspace dependencies              |
+| `npm run dev`       | Start the client and server with hot reload |
+| `npm run build`     | Build the client and server                 |
+| `npm run typecheck` | Type-check both workspaces                  |
+| `npm run lint`      | Run ESLint                                  |
+| `npm run format`    | Format the repository with Prettier         |
+| `npm test`          | Run the automated tests                     |
+
+## Tests
+
+```bash
+npm test
+```
+
+Vitest runs the client and server suites. The tests cover:
+
+- Profile API integration: create, read, update, delete, validation, and id conflicts. These tests persist through a temporary SQLite database and do not use the development database.
+- Random User mapping and profile search.
+- The profile detail confirmation that stops a second click on Save from deleting the profile.
 
 ## Layout
 

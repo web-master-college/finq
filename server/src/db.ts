@@ -171,3 +171,12 @@ export function deleteProfile(id: string): boolean {
   const result = connection().prepare('DELETE FROM profiles WHERE id = ?').run(id)
   return result.changes > 0
 }
+
+export function closeDatabase(): void {
+  if (!database) {
+    return
+  }
+
+  database.close()
+  database = undefined
+}
