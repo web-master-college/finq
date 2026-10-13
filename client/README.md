@@ -1,6 +1,6 @@
 # Client
 
-Vue 3 application for Action Item — User Profiles. It currently renders an application shell and a backend connectivity check.
+Vue 3 application for Action Item — User Profiles. Home checks the backend. Fetch loads 10 Random User profiles. History loads saved profiles from `/api/profiles`. Profile rows link to a placeholder at `/profile/:id`.
 
 ## Prerequisites
 

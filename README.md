@@ -1,6 +1,6 @@
 # Action Item — User Profiles
 
-Foundation for a Vue 3 and Node.js home assignment. The client and server run together from the repository root. Profile screens, persistence, and external API integration are not implemented yet.
+Vue 3 and Node.js home assignment. The client and server run together from the repository root. Fetch and History screens are implemented. Profile details actions are not.
 
 ## Prerequisites
 

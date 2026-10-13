@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 type ConnectionStatus = 'checking' | 'ok' | 'error'
 
@@ -42,20 +43,34 @@ function isOkStatus(value: unknown): boolean {
 </script>
 
 <template>
-  <p
-    class="m-0 inline-flex items-center gap-[0.6rem] rounded-lg border border-[#d5dde6] bg-white py-3 ps-4 pe-4"
-    role="status"
-    aria-live="polite"
-  >
-    <span
-      class="inline-block size-[0.65rem] rounded-full"
-      :class="{
-        'bg-[#8b98a8]': status === 'checking',
-        'bg-[#1f8a4c]': status === 'ok',
-        'bg-[#c0392b]': status === 'error',
-      }"
-      aria-hidden="true"
-    ></span>
-    <span>{{ detail }}</span>
-  </p>
+  <section class="grid gap-4">
+    <div class="flex flex-wrap gap-3">
+      <RouterLink
+        to="/fetch"
+        class="inline-flex rounded-lg bg-[#16324f] py-3 ps-5 pe-5 text-white no-underline hover:bg-[#1c3d60] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#16324f]"
+        >Fetch</RouterLink
+      >
+      <RouterLink
+        to="/history"
+        class="inline-flex rounded-lg bg-[#16324f] py-3 ps-5 pe-5 text-white no-underline hover:bg-[#1c3d60] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#16324f]"
+        >History</RouterLink
+      >
+    </div>
+    <p
+      class="m-0 inline-flex w-fit max-w-full items-center gap-2 rounded-full py-1 ps-2 pe-3 text-sm text-[#5c6b7a]"
+      role="status"
+      aria-live="polite"
+    >
+      <span
+        class="inline-block size-2 shrink-0 rounded-full"
+        :class="{
+          'bg-[#8b98a8]': status === 'checking',
+          'bg-[#1f8a4c]': status === 'ok',
+          'bg-[#c0392b]': status === 'error',
+        }"
+        aria-hidden="true"
+      ></span>
+      <span>{{ detail }}</span>
+    </p>
+  </section>
 </template>
