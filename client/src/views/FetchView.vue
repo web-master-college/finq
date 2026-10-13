@@ -27,6 +27,7 @@ if (store.fetchStatus === 'idle') {
       v-else-if="store.fetchStatus === 'ready'"
       :profiles="store.fetchedProfiles"
       empty-message="No profiles returned."
+      origin="fetch"
     />
   </section>
 </template>

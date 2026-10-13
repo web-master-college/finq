@@ -8,6 +8,7 @@ import ProfileSearch from './ProfileSearch.vue'
 const props = defineProps<{
   profiles: Profile[]
   emptyMessage: string
+  origin: 'fetch' | 'history'
 }>()
 
 const query = ref('')
@@ -20,6 +21,6 @@ const visibleProfiles = computed(() => filterProfiles(props.profiles, query.valu
     <p v-if="visibleProfiles.length === 0" class="m-0">
       {{ query.trim() ? 'No profiles match your search.' : emptyMessage }}
     </p>
-    <ProfileList v-else :profiles="visibleProfiles" />
+    <ProfileList v-else :profiles="visibleProfiles" :origin="origin" />
   </div>
 </template>

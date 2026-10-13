@@ -1,6 +1,6 @@
 # Action Item — User Profiles
 
-Vue 3 and Node.js home assignment. The client and server run together from the repository root. Fetch and History screens are implemented. Profile details actions are not.
+Vue 3 and Node.js home assignment. The client and server run together from the repository root. Fetch, History, and profile detail actions are implemented.
 
 ## Prerequisites
 

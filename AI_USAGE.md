@@ -8,4 +8,6 @@ It was also used to integrate Tailwind CSS, improve error handling, and support 
 
 Cursor assisted with the profile SQLite schema, Zod request validation, and the profile REST endpoints.
 
+Cursor also assisted with the Fetch and History screens, and with the profile detail screen: Hebrew RTL layout, save, update, and delete actions, and keeping fetched profiles distinct from persisted ones.
+
 I defined the requirements, made the architectural decisions, reviewed the generated code, and validated the implementation before accepting changes.

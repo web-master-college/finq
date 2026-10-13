@@ -14,15 +14,19 @@ I chose Express for a lightweight API and SQLite for local persistence without r
 
 Tradeoff: SQLite is less suitable for a highly concurrent, distributed deployment, and writing SQL directly requires more care than using an ORM. For this assignment, the reduced setup and implementation overhead are worthwhile.
 
-3. Vue 3 with TypeScript and Pinia
+3. Pinia for Shared Profile State
 
-I chose Vue 3 with the Composition API, TypeScript, Vue Router, and Pinia to keep routing, application state, and UI components separate.
+Fetched profiles and profiles loaded from the database live in one Pinia store. Fetch, History, and Profile Detail all read that store, so a save, rename, or delete is visible on the other screens without each view keeping its own copy.
 
-Tradeoff: Pinia adds a dependency, but provides a clear place to manage profile state shared between the list and detail screens.
+Tradeoff: Pinia adds a dependency. Passing profiles through route state, or refetching them in every view, would duplicate the same data and make the detail actions harder to keep consistent.
 
 RTL/LTR Handling
 
-The profile details screen requires Hebrew labels alongside values such as email addresses, phone numbers, and Latin names. The intended approach is to use RTL for the Hebrew interface while explicitly isolating LTR values with appropriate dir attributes. Tailwind's logical spacing utilities help avoid direction-dependent layout rules.
+The profile detail screen sets `dir="rtl"` on its own section, so Hebrew labels, the form, and the action row flow right to left. The rest of the application stays LTR. In that row the first control is the rightmost one: Save or Delete, then Update to its left.
+
+Latin values and the name inputs set `dir="ltr"` so characters stay in Latin reading order — an email or a street number is not reversed. `text-right` then aligns that text with the right edge, directly under the Hebrew label. Tailwind logical spacing keeps padding consistent in both directions.
+
+Save and Delete occupy the same slot, but which one appears depends on whether the profile is stored in the database, not on whether the user arrived from Fetch or History. The `from` query only chooses the screen that Back returns to.
 
 Scope and Future Improvements
 

@@ -25,6 +25,7 @@ void store.loadSavedProfiles()
       v-else-if="store.historyStatus === 'ready'"
       :profiles="store.savedProfiles"
       empty-message="No saved profiles."
+      origin="history"
     />
   </section>
 </template>
