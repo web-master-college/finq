@@ -157,3 +157,5 @@ vite.config.ts.timestamp-*
 *.sqlite3
 *.db-journal
 *.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm

@@ -6,4 +6,6 @@ During the initial setup, it helped establish the monorepo structure, configure 
 
 It was also used to integrate Tailwind CSS, improve error handling, and support code review and debugging.
 
+Cursor assisted with the profile SQLite schema, Zod request validation, and the profile REST endpoints.
+
 I defined the requirements, made the architectural decisions, reviewed the generated code, and validated the implementation before accepting changes.

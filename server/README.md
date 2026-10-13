@@ -1,6 +1,6 @@
 # Server
 
-Express server for Action Item — User Profiles. The only route implemented so far is a health check.
+Express server for Action Item — User Profiles. Saved profiles are stored in SQLite.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ Express server for Action Item — User Profiles. The only route implemented so 
 - npm 11
 - Dependencies installed from the repository root with `npm install`
 
-`better-sqlite3` 13 is installed for later SQLite storage. It is not opened, and no schema exists yet. Zod 4 is installed for later request validation and is not used yet.
+`better-sqlite3` stores profiles. Zod 4 validates profile requests.
 
 ## Run
 
@@ -34,7 +34,20 @@ curl http://localhost:3000/api/health
 { "status": "ok" }
 ```
 
-Unknown routes return HTTP 404. Invalid JSON returns HTTP 400. Unexpected failures return HTTP 500.
+The database file is created at `server/data/profiles.sqlite` on startup. `*.sqlite` is gitignored. Set `DATABASE_PATH` to use a different file.
+
+| Method | Endpoint | Behavior |
+| --- | --- | --- |
+| GET | `/api/health` | Server health check |
+| GET | `/api/profiles` | List saved profiles |
+| GET | `/api/profiles/:id` | Get one saved profile |
+| POST | `/api/profiles` | Save a profile (`201`, or `409` if the id already exists) |
+| PATCH | `/api/profiles/:id` | Update `firstName` and/or `lastName` |
+| DELETE | `/api/profiles/:id` | Delete a profile (`204`) |
+
+Profile ids are UUIDs, matching Random User `login.uuid`. A profile also stores a required `title`, name, gender, email, phone, age, birth year, address, and picture URLs. Address text and postcode may be empty. Postcode may be sent as a string or a number and is stored as text. Picture URLs must use HTTP or HTTPS.
+
+JSON errors use `{ "error": "..." }`. Unknown profiles return `404`. Invalid profile input returns `400`. Malformed JSON returns `400`. Unexpected failures return `500`.
 
 ## Build
 

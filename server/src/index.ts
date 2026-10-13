@@ -1,4 +1,13 @@
 import express, { type ErrorRequestHandler } from 'express'
+import {
+  deleteProfile,
+  getProfile,
+  initializeDatabase,
+  insertProfile,
+  listProfiles,
+  updateProfileNames,
+} from './db.js'
+import { profileNameUpdateSchema, profileSchema } from './profileSchema.js'
 
 const app = express()
 const port = 3000
@@ -8,6 +17,60 @@ app.use(express.json())
 
 app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok' })
+})
+
+app.get('/api/profiles', (_request, response) => {
+  response.json(listProfiles())
+})
+
+app.get('/api/profiles/:id', (request, response) => {
+  const profile = getProfile(request.params.id)
+  if (!profile) {
+    response.status(404).json({ error: 'Profile not found' })
+    return
+  }
+
+  response.json(profile)
+})
+
+app.post('/api/profiles', (request, response) => {
+  const parsed = profileSchema.safeParse(request.body)
+  if (!parsed.success) {
+    response.status(400).json({ error: 'Invalid input' })
+    return
+  }
+
+  if (insertProfile(parsed.data) === 'conflict') {
+    response.status(409).json({ error: 'Profile already exists' })
+    return
+  }
+
+  response.status(201).json(parsed.data)
+})
+
+app.patch('/api/profiles/:id', (request, response) => {
+  const parsed = profileNameUpdateSchema.safeParse(request.body)
+  if (!parsed.success) {
+    response.status(400).json({ error: 'Invalid input' })
+    return
+  }
+
+  const profile = updateProfileNames(request.params.id, parsed.data)
+  if (!profile) {
+    response.status(404).json({ error: 'Profile not found' })
+    return
+  }
+
+  response.json(profile)
+})
+
+app.delete('/api/profiles/:id', (request, response) => {
+  if (!deleteProfile(request.params.id)) {
+    response.status(404).json({ error: 'Profile not found' })
+    return
+  }
+
+  response.status(204).send()
 })
 
 app.use((_request, response) => {
@@ -61,6 +124,8 @@ const handleError: ErrorRequestHandler = (error, _request, response, _next) => {
 }
 
 app.use(handleError)
+
+initializeDatabase()
 
 const server = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`)
